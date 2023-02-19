@@ -125,7 +125,7 @@ class MembersDeltaHourlyExtractOperator(BaseOperator):
         def _gen_membership_id(date,lastname):
             birthdate_hashed = sha256(date.encode('utf-8')).hexdigest()[0:5]
             membership_id = lastname + '_' + birthdate_hashed
-            return membership_id
+            return membership_id.lower()
 
         # function to ensure no records were missed during the process
         def test_count_equal(df, df1, df2):
@@ -186,8 +186,11 @@ class MembersDeltaHourlyExtractOperator(BaseOperator):
         # Generate a membership ID for each valid row, based on the last name and date of birth. 
         sucessful['membership_id'] = sucessful.apply(lambda x: _gen_membership_id(x['date_of_birth'],x['last_name']), axis=1)
 
+        # replace mobile_no column
+        sucessful['mobile_no'] = df['mobile_no_cleaned']
+
         # Select only the desired columns for the successful data, and save to a CSV file with a name that includes the execution time.
-        sucessful = sucessful[['first_name','last_name','date_of_birth','email','above_18','membership_id']]
+        sucessful = sucessful[['membership_id','first_name','last_name','email','mobile_no','above_18','date_of_birth']]
         sucessful.to_csv(self.file_path + 'success/members' + '_' + execution_time + '.csv', index =False)
 
         # Output the failed records into the failed patch that includes the execution time

@@ -24,5 +24,11 @@ Diagram to visualize Pipeline Logic.
 
 ![Diagram to visualize Pipeline Logic](section-1-data-pipeline.png?raw=true "Data Pipeline Logic")
 
+Diagram to visualize pipeline on Airflow
 
-The processed CSV files can be found in dags/members_delta_extract_hourly_dag/resources/sucess/members_2023-02-19T12:00:36.598018+00:00.csv
+![Diagram to visualize pipeline on Airflow](section-1-data-pipeline-airflow.png?raw=true "Diagram to visualize pipeline on Airflow")
+
+
+* Successfully processed records can be found in dags/members_delta_extract_hourly_dag/resources/success/
+* Failed records can be found in dags/members_delta_extract_hourly_dag/resources/failed/ - The records are formatted so that analysts can easily investigate why did the records fail
+* Original CSV files that were processed can be found in dags/members_delta_extract_hourly_dag/resources/archive/
