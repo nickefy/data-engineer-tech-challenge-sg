@@ -13,12 +13,16 @@ There are several assumptions made which is currently listed:
 2. Run Airflow as per instructions here - https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html or run it via the bash file init.sh
 3. Overwrite the DAG and Plugins folder on Airflow with the resources on the repository
 
+# Files and Folder Structure
+- dags: Contains the DAG, original CSV files, processed CSV files
+- plugins: Contains the Operator logic to process and validate CSV files
+- logs: Contains log of the the run
+
 # Extra
 Diagram to visualize Pipeline Logic.
 
 
 ![Diagram to visualize Pipeline Logic](section-1-data-pipeline.png?raw=true "Data Pipeline Logic")
 
-Logs are also included on the recent sucessful run of the Pipeline.
 
 The processed CSV files can be found in dags/members_delta_extract_hourly_dag/resources/sucess/members_2023-02-19T12:00:36.598018+00:00.csv
