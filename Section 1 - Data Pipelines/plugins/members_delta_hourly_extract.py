@@ -32,14 +32,16 @@ class MembersDeltaHourlyExtractOperator(BaseOperator):
                 _tmp_df = pd.read_csv(abs_path)
                 self.df = self.df.append(_tmp_df)
 
-    # function to remove csv files after processing
-    def _remove_files(self, context):
+    # function to archive csv files after processing
+    def _archive_files(self, context):
         _files = os.listdir(self.file_path)
+        file_path_archive = self.file_path + 'archive/'
 
         for file in _files:
             abs_path = '{}{}'.format(self.file_path,file)
+            new_path = '{}{}'.format(file_path_archive,file)
             if abs_path.endswith('.csv'):
-                print(abs_path)
+                os.rename(abs_path, new_path)
 
 
     def _clean_and_load(self, context, execution_time):
@@ -125,10 +127,27 @@ class MembersDeltaHourlyExtractOperator(BaseOperator):
             membership_id = lastname + '_' + birthdate_hashed
             return membership_id
 
+        # function to ensure no records were missed during the process
+        def test_count_equal(df, df1, df2):
+            if len(df1) + len(df2) != len(df):
+                raise ValueError('records missed')
+            else:
+                logging.info('no records were missed during the cleaning process')
+                return True
+    
+
         logging.info('Start Cleaning and loading Data')
+
 
         # This section takes the CSV files, cleans and validates data, generates a membership ID for valid data, and saves successful and failed into sucess and failed folder respectively.
         df = self.df 
+
+        # check if there are data to be processed
+        if len(df) >= 1:
+            logging.info('There are files to be processed')
+        else:
+            logging.info('There are no files to be processed')
+            return
 
         # Reset the index of the dataframe.
         df = df.reset_index()
@@ -174,11 +193,18 @@ class MembersDeltaHourlyExtractOperator(BaseOperator):
         # Output the failed records into the failed patch that includes the execution time
         failed.to_csv(self.file_path + 'failed/members' + '_' + execution_time  +'.csv', index =False)
 
+        # To test if records were missed during the process
+        test_count_equal(df, sucessful, failed)
+
+        logging.info('Cleaning has completed and files have been output into sucess and failed folder respectively')
+        logging.info('Sucessful records are output to ' + self.file_path + 'success/members' + '_' + execution_time + '.csv')
+        logging.info('Failed records are output to ' + self.file_path + 'failed/members' + '_' + execution_time + '.csv')
+
     # function to execute operator
     def execute(self, context):
         execution_date = context.get('execution_date')
         execution_time= context.get('ts')
         self._load_files(context)
         self._clean_and_load(context, execution_time)
-        self._remove_files(context)
+        self._archive_files(context)
 
