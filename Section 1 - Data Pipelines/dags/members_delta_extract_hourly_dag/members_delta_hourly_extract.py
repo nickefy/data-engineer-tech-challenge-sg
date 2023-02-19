@@ -4,6 +4,7 @@ from airflow.exceptions import AirflowException
 from airflow import models
 from airflow import DAG
 from members_delta_hourly_extract import MembersDeltaHourlyExtractOperator
+from members_delta_hourly_validate import MembersDeltaHourlyValidateOperator
 from datetime import datetime, timedelta
 import os
 
@@ -32,7 +33,7 @@ def notify_email(contextDict, **kwargs):
 # Define default arguments for the DAG, including the start date, whether the DAG should depend on past executions, email settings, project ID, number of retries, and retry delay.
 default_dag_args = {
  'start_date': datetime(2023, 2, 18),
- 'depends_on_past': True,
+ 'depends_on_past': False,
  'email_on_failure': True,
  'email_on_retry': True,
  'project_id' : 'mudah-analytics-222509',
@@ -48,11 +49,15 @@ with models.DAG(
  catchup = True,
  default_args=default_dag_args) as dag:
 
- # Define a task for the DAG, which uses a custom operator (MembersDeltaHourlyExtractOperator) to perform the data cleansing and loading. 
- # The task ID and file path are passed as arguments to the operator. The last line just adds the task to the DAG.
+ # Define tasks for the DAG, which uses a custom operators to perform cleaning, loading, and validating 
+ # The task ID and file path are passed as arguments to the operator. The last line adds sequencial dependency to the dag
 
  clean_and_load=MembersDeltaHourlyExtractOperator(
- task_id='clean_and_load',
+ task_id='clean_and_load_task',
  file_path= file_path_dag)
 
- clean_and_load
+ validate=MembersDeltaHourlyValidateOperator(
+ task_id='validate_task',
+ file_path= file_path_dag)
+
+ clean_and_load >> validate
