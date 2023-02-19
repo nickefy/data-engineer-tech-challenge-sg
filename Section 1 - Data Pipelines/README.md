@@ -15,6 +15,10 @@ There are several assumptions made which is currently listed:
 
 # Extra
 Diagram to visualize Pipeline Logic.
+
+
 ![Diagram to visualize Pipeline Logic](section-1-data-pipeline.png?raw=true "Data Pipeline Logic")
 
-Logs are also included on the recent sucessful run of the Pipeline
+Logs are also included on the recent sucessful run of the Pipeline.
+
+The processed CSV files can be found in dags/members_delta_extract_hourly_dag/resources/sucess/members_2023-02-19T12:00:36.598018+00:00.csv
