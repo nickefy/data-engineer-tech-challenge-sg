@@ -1,4 +1,4 @@
-# Section 2 Databases
+# Section 2 - Databases
 This section of the repository contains the resources and SQL code to initialize a postgres database containing the tables which correlates to the entities of the requirement. DBeaver was used as a DB visualization tool.
 
 Assumptions:
@@ -28,6 +28,12 @@ Assumptions:
 * members: The members table is a dimension table containing information for each member. In this particular case, we had generated data based on the output from section 1, which gives us the first and last name, email, and phone number of the member. The member_id is the primary key for this table. Members table has a mandatory one to many optional relationship with the transactions table.
 
 * items: The items table is a dimension table containing information for each item. There are information such as item name, manufacture name, weight of the item, and its cost. The item_id is the primary key for this table. Items table has a mandatory one to many optional relationship with the transactions table.
+
+# Results
+The query to produce results for the following requirements:
+1. Which are the top 10 members by spending
+2. Which are the top 3 items that are frequently brought by members
+can be found in the resources folder
 
 # Extra
 
