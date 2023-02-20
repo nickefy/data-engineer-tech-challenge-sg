@@ -24,6 +24,8 @@ Diagram to visualize Pipeline Logic.
 
 ![Diagram to visualize Pipeline Logic](section-1-data-pipeline.png?raw=true "Data Pipeline Logic")
 
+The pipeline starts off by checking if there are CSV files in the storage/filepath. If there are indeed files, the pipeline checks if the date_of_birth, name, email, and mobile_no are valid. If all of them are valid and the user is over 18 years old, the pipeline splits these records into success records, and the remaining as failed records. There are also formating and cleaning done to all the columns. The pipeline then does a validity check if any records are missing after processing. If it passes, the pipeline outputs success records into the success folder and failed records into the failed folder, while also moving the original CSV files into the archive folder. The pipeline then performs several data validation checks on the success records to ensure the fields are valid.
+
 Diagram to visualize pipeline on Airflow
 
 ![Diagram to visualize pipeline on Airflow](section-1-data-pipeline-airflow.png?raw=true "Diagram to visualize pipeline on Airflow")
