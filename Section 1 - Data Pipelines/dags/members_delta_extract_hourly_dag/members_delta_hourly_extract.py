@@ -32,7 +32,7 @@ def notify_email(contextDict, **kwargs):
 
 # Define default arguments for the DAG, including the start date, whether the DAG should depend on past executions, email settings, project ID, number of retries, and retry delay.
 default_dag_args = {
- 'start_date': datetime(2023, 2, 18),
+ 'start_date': datetime.now() - timedelta(hours = 2),
  'depends_on_past': False,
  'email_on_failure': True,
  'email_on_retry': True,

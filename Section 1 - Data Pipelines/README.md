@@ -11,7 +11,9 @@ There are several assumptions made which is currently listed:
 
 1. Install Docker as per instructions here - https://docs.docker.com/engine/install/
 2. Run Airflow as per instructions here - https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html or run it via the bash file init.sh
-3. Overwrite the DAG and Plugins folder on Airflow with the resources on the repository
+3. Wait for airflow to deploy. Go to localhost:8080 on browser and login with credentials user = airflow, pw = airflow
+4. Look for the members_delta_extract_hourly dag and trigger it.
+5. verify output at dags/members_delta_extract_hourly_dag/resources/success/
 
 # Files and Folder Structure
 - dags: Contains the DAG, original CSV files, processed CSV files
